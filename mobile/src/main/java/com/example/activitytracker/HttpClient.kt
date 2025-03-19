@@ -1,10 +1,15 @@
-import okhttp3.*
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import java.io.IOException
 
 // Create a single OkHttpClient instance (you can reuse it for all requests)
 val client = OkHttpClient()
+public const val serverURL = "http://35.155.119.40"
 
 // Function to send a POST request
 fun sendPostRequest(url: String, jsonBody: String) {

@@ -14,6 +14,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import sendPostRequest
+import serverURL
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 
 class MobileMain : AppCompatActivity() {
 
@@ -62,6 +67,16 @@ class MobileMain : AppCompatActivity() {
         lifecycleScope.launch {
             actDao.insert(act)
         }
+        uploadRecord(act)
+    }
+
+    fun uploadRecord(act: Act) {
+        val endpoint = "/logUpload"
+        val url = serverURL + endpoint;
+        val payload = """${act.label},${act.timestamp}"""
+
+        sendPostRequest(url, payload)
+
     }
 
     fun updateUI() {
@@ -71,10 +86,20 @@ class MobileMain : AppCompatActivity() {
     }
 
     private fun buildActivityListString(): String {
-        return activities.joinToString(separator = "\n") { act ->
-            act.toString()
+        val today = LocalDate.now()
+
+        // Filter activities where the timestamp's date is equal to today's date.
+        val todaysActivities = activities.filter { act ->
+            val actDate = Instant.ofEpochMilli(act.timestamp)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+            actDate == today
         }
+
+
+        return todaysActivities.joinToString(separator = "\n") { act -> act.toString() };
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

@@ -139,6 +139,14 @@ fun WearSpeechScreen(
 
             var text = "";
             if (act != null) {
+//                val now = Date.from(Instant.now())
+//                val start = Date.from(Instant.ofEpochMilli(act.timestamp))
+//                val durationMillis = now.time - start.time
+//                val totalSeconds = durationMillis / 1000
+//                val minutes = totalSeconds / 60
+//                val seconds = totalSeconds % 60
+//                val duration = "$minutes:${if (seconds < 10) "0$seconds" else seconds}"
+//                text = "${act.label}: $duration"
                 text = act.toString();
             }
                 androidx.wear.compose.material.Text(
